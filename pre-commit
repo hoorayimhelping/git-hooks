@@ -3,10 +3,10 @@
 # Pre commit hook that compiles scss files into css files and places them in the correct directory
 # Then adds the files to staging
 
-sass_path="app/sass/*.scss"
-css_path="styles/"
+sass_path = "app/sass/*.scss"
+css_path = "styles/"
 
-staged_files=`git diff --cached --name-only`.split("\n")
+staged_files = `git diff --cached --name-only`.split("\n")
 
 puts "Building Sass"
 
