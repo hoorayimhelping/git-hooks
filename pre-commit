@@ -10,6 +10,8 @@ staged_files=`git diff --cached --name-only`.split("\n")
 
 puts "Building Sass"
 
+built_files = 0
+
 staged_files.each do |staged_file|
     if staged_file.match /\.scss$/
         filename = `basename #{staged_file}`
@@ -21,6 +23,9 @@ staged_files.each do |staged_file|
 
             puts "#{staged_file} => #{css_file}"
             `git add #{css_file}`
+            built_files += 1
         end
     end
 end
+
+puts "Finished. Built #{built_files} files"
