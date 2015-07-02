@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+#
+# Pre commit hook that compiles scss files into css files and places them in the correct directory
+# Then adds the files to staging
+
+sass_path="app/sass/*.scss"
+css_path="styles/"
+
+staged_files=`git diff --cached --name-only`.split("\n")
+
+puts "Building Sass"
+
+staged_files.each do |staged_file|
+    if staged_file.match /\.scss$/
+        filename = `basename #{staged_file}`
+        if filename.match /(^(?!_)).+\.scss$/
+            css_file = "#{css_path}#{filename}"
+            css_file.sub! 'scss', 'css'
+
+            `sass --sourcemap=none --style=compressed #{staged_file} #{css_file}`
+
+            puts "#{staged_file} => #{css_file}"
+            `git add #{css_file}`
+        end
+    end
+end
